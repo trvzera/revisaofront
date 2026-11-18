@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Guia de estudos de JavaScript</title><link rel="stylesheet" href="style.css"></head>
+<body><a class="skip-link" href="#guia">Pular para o guia</a><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">JS</span> caderno de revisão</a><a href="cadastro.html">Praticar com o cadastro →</a></header><main class="document-page" id="guia"><p><a href="index.html">← Voltar à revisão</a></p><aside class="study-note"><strong>Sobre este material:</strong> conteúdo do guia enviado, com exemplos independentes e gabarito ao final. O projeto citado no texto corresponde à página <a href="cadastro.html">Cadastro de alunos</a>, cujo JavaScript é <code>cadastro.js</code>. Nesta adaptação, usamos <code>defer</code> no head, uma das alternativas explicadas pelo próprio guia. O documento original está disponível em <a href="materiais/Guia-de-Estudos-JavaScript.docx">Word</a>. Use apenas dados fictícios nos exercícios.</aside>
+<h1>Guia de estudos — JavaScript para a prova de Front-end</h1>
+<p>Material de apoio com teoria, exemplos e leitura passo a passo do projeto de cadastro de alunos.</p>
+<p>Os assuntos seguem a lista informada: variáveis e tipos, lógica condicional, funções, DOM, máscaras, localStorage e sessionStorage. Como a apostila não foi fornecida, este material não reproduz suas páginas.</p>
+<h2>Como estudar com este guia</h2>
+<p>Leia um tópico, tente prever o resultado do código e só depois execute. Mantenha index.html e script.js abertos para comparar a explicação com o projeto. Os exemplos pequenos são independentes: não é necessário colar todos no mesmo arquivo.</p>
+<p>Para acompanhar console.log(), abra as ferramentas de desenvolvedor do navegador com F12 e selecione Console. Para estudar o armazenamento, procure Application/Aplicativo → Storage/Armazenamento. Os nomes podem variar conforme o navegador.</p>
+<h2>1. Como o JavaScript se conecta ao HTML</h2>
+<p>O HTML define os elementos da página. O CSS define a aparência. O JavaScript lê informações, toma decisões e altera os elementos em resposta a ações.</p>
+<p>No seu projeto, o arquivo JavaScript é carregado no final do body, sem defer:</p>
+<pre><code>&lt;body&gt;
+  &lt;p id=&quot;mensagem&quot;&gt;Texto inicial&lt;/p&gt;
+
+  &lt;script src=&quot;script.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;</code></pre>
+<p>O navegador analisa o HTML em ordem. Quando chega ao script, o parágrafo já existe e pode ser encontrado pelo JavaScript.</p>
+<pre><code>const paragrafo = document.querySelector(&quot;#mensagem&quot;);
+paragrafo.textContent = &quot;Texto alterado pelo JavaScript&quot;;</code></pre>
+<p>Leia a primeira linha assim: “Encontre o elemento com id mensagem e guarde uma referência a ele na variável paragrafo”. O símbolo # faz parte do seletor e indica um ID. No HTML, o ID é escrito sem #.</p>
+<p>A segunda linha altera o texto dentro daquele elemento. A página passa a mostrar “Texto alterado pelo JavaScript”.</p>
+<p>O nome da variável não precisa ser igual ao ID. Poderíamos chamá-la de elemento ou resultado; o que identifica o elemento é o seletor &quot;#mensagem&quot;.</p>
+<p>Se você colocar esse script no head sem defer, ele poderá executar antes de o parágrafo existir. Nesse momento, querySelector retorna null e tentar acessar textContent causa erro. Para os exemplos deste guia, mantenha o script antes de &lt;/body&gt;, como no seu projeto. Outra opção seria usar defer no head.</p>
+<h2>2. Variáveis e tipos de dados</h2>
+<h3>2.1 O que é uma variável?</h3>
+<p>Uma variável é um nome associado a um valor que o programa usa. Por exemplo, o nome de um aluno, uma nota ou o resultado de uma média.</p>
+<pre><code>let nota = 6;
+nota = 8;
+
+const nome = &quot;Ana&quot;;
+console.log(nome, nota); // Ana 8</code></pre>
+<p>let permite reatribuir o valor: nota começou com 6 e depois recebeu 8. const impede reatribuição: tentar executar nome = &quot;Bia&quot; gera erro.</p>
+<p>var é uma forma mais antiga de declaração. Uma diferença importante é o escopo: let e const respeitam blocos delimitados por chaves; var tem escopo de função ou global.</p>
+<pre><code>if (true) {
+  let aviso = &quot;Olá&quot;;
+}
+
+// console.log(aviso); // Erro: aviso só existe dentro do bloco.</code></pre>
+<p>No projeto, const é usado para referências aos elementos e let alunos = [] permite substituir o array quando um cadastro é excluído.</p>
+<h3>2.2 Quais são os tipos?</h3>
+<div class="table-scroll"><table class="comparison"><tr><th>Tipo</th><th>Exemplo</th><th>Significado</th></tr><tr><td>string</td><td>&quot;Ana&quot;</td><td>Texto, escrito entre aspas ou crases</td></tr><tr><td>number</td><td>8 ou 7.5</td><td>Número; no código, o separador decimal é ponto</td></tr><tr><td>boolean</td><td>true ou false</td><td>Resultado lógico: verdadeiro ou falso</td></tr><tr><td>undefined</td><td>let nome;</td><td>Variável sem valor atribuído</td></tr><tr><td>null</td><td>const aluno = null;</td><td>Ausência intencional de valor</td></tr><tr><td>object</td><td>{ nome: &quot;Ana&quot;, nota: 8 }</td><td>Conjunto de propriedades</td></tr><tr><td>array (objeto)</td><td>[8, 6, 10]</td><td>Lista ordenada de valores</td></tr></table></div>
+<p>JavaScript tem outros tipos primitivos, como bigint e symbol, mas os exemplos acima cobrem os tipos usados neste projeto. Arrays são objetos; Array.isArray(valor) verifica especificamente se um valor é um array.</p>
+<pre><code>const aluno = { nome: &quot;Ana&quot;, nota: 8 };
+const notas = [8, 6, 10];
+
+console.log(aluno.nome); // Ana
+console.log(notas[0]);   // 8: a primeira posição tem índice 0
+console.log(typeof 8);   // &quot;number&quot;
+console.log(typeof &quot;8&quot;); // &quot;string&quot;</code></pre>
+<p>typeof ajuda a consultar tipos. Uma particularidade histórica: typeof null retorna &quot;object&quot;, embora null seja um valor primitivo.</p>
+<p>Uma const pode apontar para um objeto ou array que seja modificado:</p>
+<pre><code>const nomes = [&quot;Ana&quot;];
+nomes.push(&quot;Bia&quot;); // Permitido: altera o conteúdo do mesmo array.
+// nomes = [];    // Erro: tenta reatribuir a variável.</code></pre>
+<h3>2.3 Por que converter o valor do input?</h3>
+<pre><code>const campo = document.querySelector(&quot;#nota1&quot;);
+const texto = campo.value;
+const numero = Number(texto);</code></pre>
+<p>Mesmo em um input type=&quot;number&quot;, a propriedade value fornece uma string. Se você digitar 8, texto será &quot;8&quot; e numero será 8.</p>
+<pre><code>console.log(&quot;8&quot; + &quot;6&quot;);                 // &quot;86&quot;
+console.log(Number(&quot;8&quot;) + Number(&quot;6&quot;)); // 14</code></pre>
+<p>O operador + pode concatenar textos ou somar números. Por isso o projeto converte as notas antes do cálculo.</p>
+<p>Atenção: Number(&quot;&quot;) resulta em 0 e Number(&quot;abc&quot;) resulta em NaN, um valor que indica falha de conversão numérica. Converter não substitui validar. No formulário, required impede o envio comum de campos vazios, e min/max limitam as notas.</p>
+<h2>3. Lógica condicional</h2>
+<h3>3.1 Como funciona if, else if e else?</h3>
+<p>Uma condição escolhe qual bloco executar. A comparação produz true ou false.</p>
+<pre><code>const media = 6;
+
+if (media &gt;= 7) {
+  console.log(&quot;Aprovado&quot;);
+} else if (media &gt;= 5) {
+  console.log(&quot;Recuperação&quot;);
+} else {
+  console.log(&quot;Reprovado&quot;);
+}</code></pre>
+<p>Passo a passo: 6 &gt;= 7 é falso, então o primeiro bloco é ignorado. Depois, 6 &gt;= 5 é verdadeiro, então aparece “Recuperação”. O bloco else não é executado.</p>
+<p>Em uma cadeia if/else if/else, apenas o primeiro bloco com condição verdadeira é escolhido. A ordem importa: se media &gt;= 5 fosse testado primeiro, uma média 8 também entraria nesse bloco.</p>
+<h3>3.2 Operadores que você deve reconhecer</h3>
+<div class="table-scroll"><table class="comparison"><tr><th>Operador</th><th>Significado</th><th>Exemplo</th></tr><tr><td>=</td><td>Atribuição</td><td>let nota = 8;</td></tr><tr><td>===</td><td>Compara valor e tipo</td><td>8 === &quot;8&quot; resulta em false</td></tr><tr><td>!==</td><td>Diferente em valor ou tipo</td><td>8 !== &quot;8&quot; resulta em true</td></tr><tr><td>&gt; e &lt;</td><td>Maior e menor</td><td>8 &gt; 6 resulta em true</td></tr><tr><td>&gt;= e &lt;=</td><td>Maior/menor ou igual</td><td>7 &gt;= 7 resulta em true</td></tr><tr><td>&amp;&amp;</td><td>E: ambas as condições</td><td>nota &gt;= 0 &amp;&amp; nota &lt;= 10</td></tr><tr><td>||</td><td>OU: pelo menos uma condição</td><td>nota &lt; 0 || nota &gt; 10</td></tr><tr><td>!</td><td>Inverte um valor lógico</td><td>!true resulta em false</td></tr></table></div>
+<p>== permite conversões ao comparar: 8 == &quot;8&quot; resulta em true. Prefira === quando quiser comparar também o tipo.</p>
+<pre><code>const nota = 12;
+if (nota &lt; 0 || nota &gt; 10) {
+  console.log(&quot;Nota fora do intervalo&quot;);
+}</code></pre>
+<p>Aqui basta uma das condições ser verdadeira para exibir o aviso.</p>
+<h3>3.3 Ternário e switch</h3>
+<p>O ternário escolhe um de dois valores:</p>
+<pre><code>const mensagem = media &gt;= 7 ? &quot;Aprovado&quot; : &quot;Não aprovado&quot;;</code></pre>
+<p>Leia: se a condição for verdadeira, use o primeiro valor; se for falsa, use o segundo.</p>
+<p>O switch compara um valor com opções específicas:</p>
+<pre><code>const acao = &quot;salvar&quot;;
+switch (acao) {
+  case &quot;salvar&quot;:
+    console.log(&quot;Salvar cadastro&quot;);
+    break;
+  case &quot;excluir&quot;:
+    console.log(&quot;Excluir cadastro&quot;);
+    break;
+  default:
+    console.log(&quot;Ação desconhecida&quot;);
+}</code></pre>
+<p>break interrompe o switch. Sem ele, a execução pode seguir para os próximos casos.</p>
+<h2>4. Funções</h2>
+<h3>4.1 Declarar, chamar e receber um resultado</h3>
+<p>Uma função agrupa instruções para realizar uma tarefa. Declarar a função prepara a tarefa; chamar a função executa seu corpo.</p>
+<pre><code>function calcularMedia(nota1, nota2) {
+  return (nota1 + nota2) / 2;
+}
+
+const media = calcularMedia(8, 6);
+console.log(media); // 7</code></pre>
+<p>Na declaração, nota1 e nota2 são parâmetros: nomes que receberão os dados. Na chamada, 8 e 6 são argumentos: os valores fornecidos.</p>
+<p>Durante a execução, nota1 vale 8 e nota2 vale 6. A expressão (8 + 6) / 2 resulta em 7. return devolve esse 7 para a chamada, e const media guarda o resultado.</p>
+<p>Os nomes não criam ligações automáticas entre variáveis. É a passagem dos argumentos que entrega os valores aos parâmetros.</p>
+<h3>4.2 O que return faz?</h3>
+<p>return devolve um valor e encerra aquela execução da função.</p>
+<pre><code>function verificarSituacao(media) {
+  if (media &gt;= 7) {
+    return &quot;Aprovado&quot;;
+  } else if (media &gt;= 5) {
+    return &quot;Recuperação&quot;;
+  } else {
+    return &quot;Reprovado&quot;;
+  }
+}
+
+const situacao = verificarSituacao(7);</code></pre>
+<p>Nesse exemplo, situacao recebe a string &quot;Aprovado&quot;. Nada aparece automaticamente no HTML. Para exibir, será necessário alterar um elemento do DOM.</p>
+<p>console.log e return têm papéis diferentes:</p>
+<pre><code>function apenasMostrar() {
+  console.log(10);
+}
+
+const resultado = apenasMostrar();
+// O console mostra 10, mas resultado recebe undefined.</code></pre>
+<p>Sem return com um valor, uma função comum termina devolvendo undefined.</p>
+<h3>4.3 Outras formas de escrever funções</h3>
+<pre><code>const dobrar = function (numero) {
+  return numero * 2;
+};
+
+const triplicar = (numero) =&gt; {
+  return numero * 3;
+};
+
+const quadruplicar = numero =&gt; numero * 4;</code></pre>
+<p>A última arrow function tem retorno implícito: a expressão após a seta é devolvida sem escrever return. Com um corpo entre chaves, você precisa escrever return para devolver esse resultado.</p>
+<h2>5. DOM e eventos: como o resultado chega à tela</h2>
+<h3>5.1 O que é DOM?</h3>
+<p>DOM é a representação do documento como uma árvore de objetos. Cada elemento HTML pode ser acessado e modificado por JavaScript.</p>
+<p>Os passos mais comuns são: selecionar um elemento, registrar um evento, ler os valores, processar os dados e atualizar a página.</p>
+<h3>5.2 Exemplo completo e pequeno da média</h3>
+<p>Este exemplo pode ser usado em dois arquivos separados para estudar o fluxo básico.</p>
+<p>HTML:</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Estudo da média&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;form id=&quot;formulario&quot;&gt;
+    &lt;label for=&quot;nota1&quot;&gt;Primeira nota&lt;/label&gt;
+    &lt;input id=&quot;nota1&quot; type=&quot;number&quot; min=&quot;0&quot; max=&quot;10&quot; step=&quot;0.1&quot; required&gt;
+
+    &lt;label for=&quot;nota2&quot;&gt;Segunda nota&lt;/label&gt;
+    &lt;input id=&quot;nota2&quot; type=&quot;number&quot; min=&quot;0&quot; max=&quot;10&quot; step=&quot;0.1&quot; required&gt;
+
+    &lt;button type=&quot;submit&quot;&gt;Calcular&lt;/button&gt;
+  &lt;/form&gt;
+
+  &lt;p id=&quot;resumo&quot;&gt;Aguardando notas.&lt;/p&gt;
+  &lt;script src=&quot;script.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>JavaScript:</p>
+<pre><code>const formulario = document.querySelector(&quot;#formulario&quot;);
+const campoNota1 = document.querySelector(&quot;#nota1&quot;);
+const campoNota2 = document.querySelector(&quot;#nota2&quot;);
+const resumo = document.querySelector(&quot;#resumo&quot;);
+
+function calcularMedia(nota1, nota2) {
+  return (nota1 + nota2) / 2;
+}
+
+function verificarSituacao(media) {
+  if (media &gt;= 7) return &quot;Aprovado&quot;;
+  if (media &gt;= 5) return &quot;Recuperação&quot;;
+  return &quot;Reprovado&quot;;
+}
+
+formulario.addEventListener(&quot;submit&quot;, function (evento) {
+  evento.preventDefault();
+
+  const nota1 = Number(campoNota1.value);
+  const nota2 = Number(campoNota2.value);
+  const media = calcularMedia(nota1, nota2);
+  const situacao = verificarSituacao(media);
+
+  resumo.textContent = `Média: ${media.toFixed(2)} — ${situacao}`;
+});</code></pre>
+<p>Entenda cada etapa ao enviar notas 8 e 6:</p>
+<p>1. O navegador já criou os elementos quando o script é executado.</p>
+<p>2. querySelector encontra cada elemento pelo ID.</p>
+<p>3. addEventListener registra a função que deverá executar no envio do formulário. O cálculo ainda não aconteceu.</p>
+<p>4. O usuário preenche as notas e envia o formulário.</p>
+<p>5. preventDefault impede o envio padrão, que poderia navegar ou recarregar a página.</p>
+<p>6. campoNota1.value fornece &quot;8&quot; e campoNota2.value fornece &quot;6&quot;.</p>
+<p>7. Number transforma os textos em números.</p>
+<p>8. calcularMedia(8, 6) devolve 7.</p>
+<p>9. verificarSituacao(7) devolve &quot;Aprovado&quot;.</p>
+<p>10. resumo.textContent coloca “Média: 7.00 — Aprovado” no parágrafo.</p>
+<p>A conexão com o que aparece na tela está na atribuição a textContent. A função verificarSituacao apenas escolhe e devolve o texto.</p>
+<p>toFixed(2) formata um número com duas casas decimais e devolve uma string. Ele não modifica a variável media. As crases permitem inserir valores no texto com ${...}.</p>
+<h3>5.3 Seletores e propriedades</h3>
+<div class="table-scroll"><table class="comparison"><tr><th>Recurso</th><th>Uso</th></tr><tr><td>document.querySelector(&quot;#resumo&quot;)</td><td>Primeiro elemento com o seletor informado</td></tr><tr><td>document.querySelector(&quot;.aluno&quot;)</td><td>Primeiro elemento com a classe aluno</td></tr><tr><td>document.querySelectorAll(&quot;.aluno&quot;)</td><td>Coleção dos elementos com essa classe</td></tr><tr><td>document.getElementById(&quot;resumo&quot;)</td><td>Busca por ID, sem usar #</td></tr><tr><td>campo.value</td><td>Conteúdo de um campo de formulário</td></tr><tr><td>elemento.textContent</td><td>Texto de um elemento</td></tr><tr><td>elemento.innerHTML</td><td>Conteúdo HTML, interpretado como marcação</td></tr><tr><td>elemento.classList.add(&quot;aprovado&quot;)</td><td>Adiciona uma classe</td></tr><tr><td>elemento.classList.remove(&quot;aprovado&quot;)</td><td>Remove uma classe</td></tr><tr><td>elemento.classList.toggle(&quot;ativo&quot;)</td><td>Alterna presença de uma classe</td></tr></table></div>
+<p>Use textContent para inserir texto fornecido pelo usuário. innerHTML interpreta tags e exige cuidado com a origem do conteúdo.</p>
+<p>No projeto, a classe determina a aparência do resultado:</p>
+<pre><code>.aprovado { color: green; }
+resumo.classList.add(&quot;aprovado&quot;);</code></pre>
+<p>O JavaScript adiciona o nome da classe ao elemento, e o CSS aplica a cor. Em classList.add, não se escreve ponto antes do nome.</p>
+<h3>5.4 Eventos e funções de resposta</h3>
+<p>click representa um clique; input acompanha mudanças durante a digitação; submit representa o envio do formulário. A função entregue ao listener é chamada quando o evento acontece.</p>
+<pre><code>function avisar() {
+  console.log(&quot;Você clicou!&quot;);
+}
+
+botao.addEventListener(&quot;click&quot;, avisar);</code></pre>
+<p>Aqui passamos avisar sem parênteses para registrar a função. Escrever avisar() executaria a função naquele momento e passaria seu retorno ao listener.</p>
+<h3>5.5 Criando elementos na lista</h3>
+<pre><code>const lista = document.querySelector(&quot;#lista-alunos&quot;);
+const item = document.createElement(&quot;li&quot;);
+item.textContent = &quot;Ana — Aprovado&quot;;
+lista.appendChild(item);</code></pre>
+<p>createElement cria o elemento, mas não o coloca na página. appendChild insere o item na lista. No projeto, forEach repete a criação para cada aluno do array.</p>
+<p>lista.replaceChildren() esvazia os filhos da lista antes de reconstruí-la. Isso evita duplicação dos itens na tela.</p>
+<h2>6. Máscaras de entrada</h2>
+<h3>6.1 O que é uma máscara?</h3>
+<p>Uma máscara formata o valor digitado. Por exemplo, transforma 12345678901 em 123.456.789-01. A formatação não comprova que o CPF existe nem que seus dígitos verificadores estão corretos.</p>
+<pre><code>&lt;input id=&quot;cpf&quot; type=&quot;text&quot; inputmode=&quot;numeric&quot; maxlength=&quot;14&quot;&gt;</code></pre>
+<p>type=&quot;text&quot; permite exibir pontos e hífen. inputmode=&quot;numeric&quot; sugere um teclado numérico em dispositivos compatíveis, mas não bloqueia letras sozinho. maxlength conta todos os caracteres, incluindo a pontuação.</p>
+<pre><code>const campoCpf = document.querySelector(&quot;#cpf&quot;);
+
+function aplicarMascaraCpf(valor) {
+  return valor
+    .replace(/\D/g, &quot;&quot;)
+    .slice(0, 11)
+    .replace(/(\d{3})(\d)/, &quot;$1.$2&quot;)
+    .replace(/(\d{3})(\d)/, &quot;$1.$2&quot;)
+    .replace(/(\d{3})(\d{1,2})$/, &quot;$1-$2&quot;);
+}
+
+campoCpf.addEventListener(&quot;input&quot;, function () {
+  campoCpf.value = aplicarMascaraCpf(campoCpf.value);
+});</code></pre>
+<p>O fluxo é: usuário digita → evento input → leitura de value → função formata → atribuição a value → campo exibe o texto formatado.</p>
+<p>Observe que return sozinho não altera o campo. A mudança visual acontece porque o retorno é atribuído a campoCpf.value.</p>
+<h3>6.2 Entendendo a expressão regular</h3>
+<p>Expressões regulares descrevem padrões de texto. Neste exemplo:</p>
+<div class="table-scroll"><table class="comparison"><tr><th>Trecho</th><th>Significado</th></tr><tr><td>\D</td><td>Caractere que não é um dígito</td></tr><tr><td>g</td><td>Aplicar a substituição a todas as ocorrências encontradas</td></tr><tr><td>\d</td><td>Um dígito de 0 a 9</td></tr><tr><td>{3}</td><td>Exatamente três repetições</td></tr><tr><td>{1,2}</td><td>Uma ou duas repetições</td></tr><tr><td>(...)</td><td>Grupo de captura</td></tr><tr><td>$1 e $2 no texto de substituição</td><td>Conteúdo do primeiro e segundo grupos</td></tr><tr><td>$ no final do padrão</td><td>Final do texto</td></tr></table></div>
+<p>replace procura um padrão e devolve um novo texto com a substituição. slice(0, 11) devolve até os primeiros 11 caracteres. As strings originais não são modificadas por esses métodos; cada etapa entrega o resultado à próxima.</p>
+<p>Para a entrada 12345678901, acompanhe os resultados:</p>
+<pre><code>Remover não dígitos: 12345678901
+Limitar a 11:        12345678901
+Primeiro ponto:     123.45678901
+Segundo ponto:      123.456.78901
+Hífen final:        123.456.789-01</code></pre>
+<h2>7. localStorage e sessionStorage</h2>
+<h3>7.1 Variável e armazenamento têm durações diferentes</h3>
+<p>Uma variável comum existe durante a execução da página. Ao recarregar, o código inicia novamente. Storage permite guardar textos no navegador e recuperá-los depois.</p>
+<p>Salvar não é exibir: depois de recuperar os dados, você ainda precisa atualizar os campos ou criar os elementos no DOM.</p>
+<div class="table-scroll"><table class="comparison"><tr><th>Característica</th><th>localStorage</th><th>sessionStorage</th></tr><tr><td>Recarregar a página</td><td>Mantém os dados</td><td>Mantém os dados</td></tr><tr><td>Fechar a aba</td><td>Pode manter para acessos futuros</td><td>A sessão normalmente termina</td></tr><tr><td>Compartilhamento</td><td>Entre páginas da mesma origem</td><td>Por origem e sessão da aba</td></tr><tr><td>Uso no projeto</td><td>Lista de alunos</td><td>Rascunho do formulário</td></tr></table></div>
+<p>Origem é a combinação de protocolo, domínio e porta. Por exemplo, duas portas diferentes de localhost têm armazenamentos separados. Prefira testar o projeto por um servidor local, como o Live Server; o comportamento em URLs file: pode variar.</p>
+<p>localStorage não é um banco de dados de servidor e não sincroniza automaticamente com outro dispositivo. Os dados podem ser apagados pelo usuário ou navegador. Não guarde senhas nesses armazenamentos.</p>
+<h3>7.2 Salvar, ler e remover</h3>
+<pre><code>localStorage.setItem(&quot;nome&quot;, &quot;Ana&quot;);
+
+const nomeSalvo = localStorage.getItem(&quot;nome&quot;);
+console.log(nomeSalvo); // &quot;Ana&quot;
+
+localStorage.removeItem(&quot;nome&quot;);</code></pre>
+<p>&quot;nome&quot; é a chave usada para localizar o valor. &quot;Ana&quot; é o valor. A leitura usa a mesma chave da gravação.</p>
+<p>Se a chave não existir, getItem retorna null. removeItem remove uma chave. clear remove todas as chaves daquele armazenamento na origem atual; por isso o projeto prefere operações específicas.</p>
+<p>Para usar sessionStorage, os métodos são iguais:</p>
+<pre><code>sessionStorage.setItem(&quot;etapa&quot;, &quot;2&quot;);
+const etapa = sessionStorage.getItem(&quot;etapa&quot;);
+sessionStorage.removeItem(&quot;etapa&quot;);</code></pre>
+<p>Mesmo que você salve um número diretamente, ele é convertido em texto:</p>
+<pre><code>localStorage.setItem(&quot;nota&quot;, 8);
+const nota = localStorage.getItem(&quot;nota&quot;);
+console.log(typeof nota); // &quot;string&quot;</code></pre>
+<h3>7.3 Objetos e arrays: por que usar JSON?</h3>
+<p>Para guardar os dados estruturados de um aluno, converta-os em texto JSON. Na leitura, faça a conversão de volta.</p>
+<pre><code>const aluno = { nome: &quot;Ana&quot;, media: 7 };
+
+localStorage.setItem(&quot;aluno&quot;, JSON.stringify(aluno));
+
+const texto = localStorage.getItem(&quot;aluno&quot;);
+if (texto !== null) {
+  const alunoRecuperado = JSON.parse(texto);
+  console.log(alunoRecuperado.nome); // &quot;Ana&quot;
+  console.log(alunoRecuperado.media); // 7
+}</code></pre>
+<p>JSON.stringify transforma o objeto em uma string como &#x27;{&quot;nome&quot;:&quot;Ana&quot;,&quot;media&quot;:7}&#x27;. JSON.parse interpreta esse texto e devolve um objeto com as propriedades correspondentes.</p>
+<p>O mesmo vale para um array de alunos. No projeto, alunos.push(aluno) adiciona um objeto ao array, e salvarAlunos grava a representação JSON desse array.</p>
+<h3>7.4 Como o rascunho reaparece no campo?</h3>
+<pre><code>const campoNome = document.querySelector(&quot;#nome&quot;);
+
+campoNome.addEventListener(&quot;input&quot;, function () {
+  sessionStorage.setItem(&quot;rascunhoNome&quot;, campoNome.value);
+});
+
+const rascunho = sessionStorage.getItem(&quot;rascunhoNome&quot;);
+if (rascunho !== null) {
+  campoNome.value = rascunho;
+}</code></pre>
+<p>Ao digitar, o evento salva o texto. Ao recarregar, o código lê a chave. A linha campoNome.value = rascunho é a responsável por colocar o texto de volta no campo.</p>
+<h3>7.5 Por que o projeto tem try e catch?</h3>
+<pre><code>try {
+  localStorage.setItem(&quot;nome&quot;, &quot;Ana&quot;);
+} catch (erro) {
+  console.error(erro);
+}</code></pre>
+<p>try contém uma operação que pode falhar. Se houver um erro, catch recebe esse erro e permite tratá-lo. O navegador pode bloquear armazenamento, ficar sem espaço, ou haver texto JSON inválido salvo. Isso explica os blocos de tratamento no projeto.</p>
+<h2>8. O caminho completo no projeto de alunos</h2>
+<p>Ao abrir a página, as chamadas ao final de script.js recuperam o rascunho, carregam os alunos e montam a lista. Declarar as funções anteriormente não as executa por si só.</p>
+<p>Ao enviar o formulário, o fluxo principal é:</p>
+<pre><code>Usuário preenche e envia
+        ↓
+Evento submit executa a função registrada
+        ↓
+Leitura dos campos com .value
+        ↓
+Conversão das notas com Number()
+        ↓
+calcularMedia() devolve um número
+        ↓
+verificarSituacao() devolve uma string
+        ↓
+textContent e classList atualizam o resultado
+        ↓
+push adiciona o objeto ao array alunos
+        ↓
+JSON.stringify + setItem persistem a lista
+        ↓
+renderizarAlunos() cria os itens na página</code></pre>
+<p>renderizar é apenas o nome escolhido para a função que monta a exibição. O nome da função não tem um poder especial: quem altera a página são as operações executadas dentro dela.</p>
+<h2>9. Erros comuns e como reconhecer</h2>
+<div class="table-scroll"><table class="comparison"><tr><th>Sintoma</th><th>Causa possível</th><th>O que conferir</th></tr><tr><td>Cannot set properties of null</td><td>Elemento não encontrado</td><td>ID, seletor e posição do script</td></tr><tr><td>As notas viram &quot;86&quot;</td><td>Soma de strings</td><td>Conversão com Number()</td></tr><tr><td>A função existe, mas nada acontece</td><td>Função não chamada ou evento não registrado</td><td>Chamada e addEventListener</td></tr><tr><td>A função retorna texto, mas a tela não muda</td><td>Falta atualizar o DOM</td><td>Atribuição a textContent ou value</td></tr><tr><td>O console mostra algo, mas a variável recebe undefined</td><td>A função apenas usa console.log</td><td>return com o valor esperado</td></tr><tr><td>Ao enviar, a página recarrega</td><td>Ação padrão do formulário</td><td>evento.preventDefault()</td></tr><tr><td>Dados salvos não aparecem após recarregar</td><td>Falta leitura ou atualização da interface</td><td>getItem, JSON.parse e renderização</td></tr><tr><td>Lista aparece duplicada</td><td>Itens antigos não foram removidos</td><td>Esvaziar antes de reconstruir</td></tr><tr><td>Unexpected token ao usar JSON.parse</td><td>Texto não é JSON válido</td><td>Conteúdo da chave e formato de gravação</td></tr></table></div>
+<h2>10. Exercícios de revisão</h2>
+<p>Antes de olhar o gabarito, explique a resposta com suas palavras.</p>
+<p>1. Qual a diferença entre let e const? Uma const pode guardar um array que recebe novos itens?</p>
+<p>2. Qual o resultado de &quot;5&quot; + 2? Como obter o número 7?</p>
+<p>3. Por que usar Number(campo.value) antes de somar notas?</p>
+<p>4. Qual situação é devolvida para médias 7, 5 e 4.9?</p>
+<p>5. Em calcularMedia(8, 6), quais são os argumentos? O que return devolve?</p>
+<p>6. Qual a diferença entre console.log(situacao) e resumo.textContent = situacao?</p>
+<p>7. Por que o script no final do body consegue acessar os elementos anteriores sem defer?</p>
+<p>8. Na máscara, por que precisamos atribuir o retorno a campoCpf.value?</p>
+<p>9. O que acontece com um rascunho em sessionStorage ao recarregar a mesma aba?</p>
+<p>10. Como salvar e recuperar um objeto no localStorage?</p>
+<p>11. Se uma chave não existir, qual é o retorno de getItem?</p>
+<p>12. Crie uma função que receba um preço e uma porcentagem e devolva o preço com desconto. Depois exiba o retorno em um parágrafo.</p>
+<h2>11. Gabarito comentado</h2>
+<p>1. let permite reatribuir e const não. Sim: push modifica o array existente; isso não reatribui a variável.</p>
+<p>2. O resultado é &quot;52&quot;. Number(&quot;5&quot;) + 2 resulta no número 7.</p>
+<p>3. Porque value é string, e o operador + pode concatenar em vez de somar.</p>
+<p>4. Aprovado, Recuperação e Reprovado. A comparação &gt;= inclui o limite.</p>
+<p>5. Os argumentos são 8 e 6. return devolve o resultado 7 para a chamada.</p>
+<p>6. console.log exibe no console; textContent altera o texto do elemento da página.</p>
+<p>7. Porque o navegador já analisou e criou os elementos acima da tag script.</p>
+<p>8. Porque a função devolve um novo texto; atribuir esse texto a value atualiza o campo.</p>
+<p>9. O rascunho permanece disponível na sessão e pode ser recuperado pelo código.</p>
+<p>10. Gravar com setItem(chave, JSON.stringify(objeto)); ler com getItem e interpretar com JSON.parse, verificando antes se a chave existe.</p>
+<p>11. null.</p>
+<p>12. Uma solução possível:</p>
+<pre><code>&lt;p id=&quot;preco-final&quot;&gt;&lt;/p&gt;
+&lt;script src=&quot;script.js&quot;&gt;&lt;/script&gt;
+function aplicarDesconto(preco, porcentagem) {
+  return preco - (preco * porcentagem / 100);
+}
+
+const resultado = aplicarDesconto(100, 20);
+const paragrafo = document.querySelector(&quot;#preco-final&quot;);
+paragrafo.textContent = `Preço final: R$ ${resultado.toFixed(2)}`;
+// A página exibe: Preço final: R$ 80.00</code></pre>
+<p>Observe novamente a sequência: a função calcula e retorna; a variável guarda; a alteração de textContent exibe.</p>
+<h2>12. Revisão rápida antes da prova</h2>
+<p>? Variável guarda um valor; o tipo influencia o comportamento das operações.</p>
+<p>? .value lê ou altera um campo; .textContent lê ou altera texto de um elemento.</p>
+<p>? Number converte; if escolhe; função organiza; return devolve.</p>
+<p>? Uma função precisa ser chamada para executar seu corpo.</p>
+<p>? addEventListener registra uma resposta a um evento.</p>
+<p>? querySelector seleciona; createElement cria; appendChild insere.</p>
+<p>? Máscara formata; validação verifica regras.</p>
+<p>? localStorage e sessionStorage guardam strings.</p>
+<p>? stringify prepara objetos para gravar; parse reconstrói valores a partir do JSON.</p>
+<p>? Guardar ou retornar um valor não o exibe automaticamente: é necessário atualizar o DOM.</p>
+</main></body></html>

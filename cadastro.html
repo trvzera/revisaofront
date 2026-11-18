@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de alunos | Revisão de JavaScript</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- defer espera o HTML existir antes de executar as buscas por ID. -->
+  <script src="cadastro.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#cadastro">Pular para o conteúdo</a>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">JS</span> caderno de revisão</a>
+    <button id="alternar-tema" type="button" class="secondary">Ativar tema escuro</button>
+  </header>
+  <main class="document-page" id="cadastro">
+    <p><a href="index.html">← Voltar à revisão</a> · <a href="guia.html">Ler o guia de estudos</a></p>
+    <header class="hero">
+      <p class="eyebrow">JUNTANDO OS CONCEITOS</p>
+      <h1>Cadastro de alunos</h1>
+      <p>Um exemplo completo dos documentos: variáveis, funções, decisões, DOM, máscara de CPF e armazenamento trabalhando juntos.</p>
+    </header>
+    <p class="study-note"><strong>Use apenas dados fictícios.</strong> A lista fica no <code>localStorage</code> deste navegador. O formulário vira um rascunho no <code>sessionStorage</code> desta aba. A máscara formata o CPF e confere a quantidade de dígitos, sem validar um documento real.</p>
+    <div class="lesson-grid">
+      <section class="practice" aria-labelledby="titulo-formulario">
+        <p class="section-label">01 · PREENCHA</p>
+        <h2 id="titulo-formulario">Novo aluno</h2>
+        <!-- required, min e max ativam a validação nativa do navegador. -->
+        <form id="formulario">
+          <div class="field"><label for="nome">Nome fictício</label><input id="nome" name="nome" type="text" maxlength="60" required autocomplete="off" placeholder="Ex.: Aluno de teste"></div>
+          <div class="field"><label for="cpf">CPF fictício (11 dígitos)</label><input id="cpf" name="cpf" type="text" inputmode="numeric" required autocomplete="off" placeholder="123.456.789-01" aria-describedby="ajuda-cpf"></div>
+          <p id="ajuda-cpf" class="hint">Pode colar com ou sem pontuação. Letras e dígitos excedentes são removidos.</p>
+          <div class="field-row">
+            <div class="field"><label for="nota1">Primeira nota</label><input id="nota1" name="nota1" type="number" min="0" max="10" step="0.1" required placeholder="Ex.: 8"></div>
+            <div class="field"><label for="nota2">Segunda nota</label><input id="nota2" name="nota2" type="number" min="0" max="10" step="0.1" required placeholder="Ex.: 6"></div>
+          </div>
+          <p class="hint">Média = (nota 1 + nota 2) / 2. A partir de 7: aprovado; de 5 até menos de 7: recuperação; abaixo de 5: reprovado.</p>
+          <div class="button-row"><button type="submit">Calcular e salvar aluno</button><button id="limpar-rascunho" type="button" class="secondary">Limpar rascunho</button></div>
+        </form>
+        <p id="aviso" class="result" role="status">Preencha o formulário para começar.</p>
+      </section>
+      <section class="practice" aria-labelledby="titulo-resultado">
+        <p class="section-label">02 · ACOMPANHE</p>
+        <h2 id="titulo-resultado">Resultado e tipos</h2>
+        <p id="resumo" class="result" role="status">Aguardando um cadastro.</p>
+        <pre id="dados" class="result">Os tipos e o objeto do último cadastro vão aparecer aqui.</pre>
+        <p class="hint"><code>.value</code> entrega texto. <code>Number()</code> converte as notas. As funções calculam e retornam valores. Só a atribuição a <code>textContent</code> coloca o resultado na tela.</p>
+      </section>
+    </div>
+    <section class="lesson" aria-labelledby="titulo-lista">
+      <div class="lesson-heading"><span class="lesson-number" aria-hidden="true">03</span><div><h2 id="titulo-lista">Lista salva neste navegador</h2><p id="contador">0 aluno(s)</p></div></div>
+      <p id="lista-vazia">Nenhum aluno cadastrado. Faça seu primeiro teste acima.</p>
+      <ul id="lista-alunos" class="student-list" aria-label="Alunos cadastrados"></ul>
+      <p class="hint">Recarregue a página: a lista é recuperada com <code>getItem()</code> e <code>JSON.parse()</code>. Excluir um item atualiza o array, salva o novo JSON e reconstrói a lista.</p>
+    </section>
+    <section class="lesson" aria-labelledby="titulo-fluxo">
+      <h2 id="titulo-fluxo">Leia o fluxo no código</h2>
+      <ol>
+        <li><code>submit</code> chama a função do evento; <code>preventDefault()</code> evita recarregar a página.</li>
+        <li>O código lê os campos, converte e valida as notas.</li>
+        <li><code>calcularMedia()</code> retorna um número; <code>verificarSituacao()</code> retorna uma string.</li>
+        <li>Um objeto reúne os dados; <code>push()</code> o adiciona ao array.</li>
+        <li><code>JSON.stringify()</code> transforma a lista em texto para salvar.</li>
+        <li><code>textContent</code>, <code>classList</code> e <code>createElement()</code> mostram os resultados.</li>
+      </ol>
+      <p>Abra <code>cadastro.js</code> para acompanhar os comentários. No guia, você encontra também escopo, ternário, <code>switch</code>, outras formas de função, expressões regulares, erros comuns e 12 exercícios com gabarito.</p>
+      <p><a href="guia.html">Abrir o guia completo →</a></p>
+    </section>
+    <footer class="footer"><p>Materiais originais: <a href="materiais/Guia-de-Estudos-JavaScript.docx">Guia de estudos (.docx)</a> · <a href="materiais/Codigo-de-referencia.docx">Código de referência (.docx)</a></p><p>A máscara quebrada do código original foi corrigida nesta adaptação. Os anexos são preservados como recebidos.</p></footer>
+  </main>
+</body>
+</html>

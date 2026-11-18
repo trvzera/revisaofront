@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Uma revisão prática de JavaScript para iniciantes, com exemplos simples e código comentado.">
+  <title>Revisão de JavaScript | Do conceito à prática</title>
+  <!-- O CSS cuida da aparência. O JavaScript fica em outro arquivo. -->
+  <link rel="stylesheet" href="style.css">
+  <!-- defer faz o script rodar depois que o HTML terminou de ser lido. -->
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topbar">
+    <a class="brand" href="#inicio"><span class="brand-mark" aria-hidden="true">JS</span> caderno de revisão</a>
+    <span class="topbar-note">HTML + CSS + JavaScript puro</span>
+  </header>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="Navegação da revisão">
+      <p class="sidebar-label">ROTEIRO DE ESTUDO</p>
+      <nav aria-label="Tópicos">
+        <a href="#variaveis">01 · Variáveis e tipos</a>
+        <a href="#condicionais">02 · Condicionais</a>
+        <a href="#funcoes">03 · Funções</a>
+        <a href="#dom">04 · Manipulação de DOM</a>
+        <a href="#mascara">05 · Máscara de celular</a>
+        <a href="#armazenamento">06 · Armazenamento</a>
+      </nav>
+      <p class="sidebar-tip">Seu jeito de estudar:<br><strong>leia → teste → mude o código</strong></p>
+      <nav aria-label="Materiais complementares"><a href="cadastro.html">→ Cadastro de alunos</a><a href="guia.html">→ Guia e exercícios</a></nav>
+    </aside>
+
+    <main id="conteudo">
+      <header class="hero" id="inicio">
+        <p class="eyebrow">APRENDER FAZENDO</p>
+        <h1>Um passo de cada vez.<br>Vamos revisar JavaScript?</h1>
+        <p>Seis assuntos, exemplos funcionando e espaço para experimentar. Abra o <strong>script.js</strong> para acompanhar os comentários de cada parte.</p>
+        <div class="hero-tags"><span>Para iniciantes</span><span>Sem bibliotecas</span><span>Código comentado</span></div>
+      </header>
+
+      <p class="study-note"><strong>Como usar:</strong> leia a explicação, experimente o exemplo e abra “Veja a ideia no código”. Depois, tente os pequenos desafios. Os números de páginas são as referências que você informou.</p>
+      <noscript><p class="study-note">Ative o JavaScript no navegador para usar os exemplos interativos.</p></noscript>
+      <aside class="study-note"><strong>Materiais dos documentos:</strong> leia o <a href="guia.html">guia completo, com exercícios e gabarito</a>, e depois pratique no <a href="cadastro.html">cadastro de alunos</a>, que reúne os assuntos em um exemplo. Os arquivos Word originais também estão disponíveis nas páginas extras.</aside>
+
+      <!-- 01: variáveis guardam valores; cada valor tem um tipo. -->
+      <section class="lesson" id="variaveis" aria-labelledby="titulo-variaveis">
+        <div class="lesson-heading">
+          <span class="lesson-number" aria-hidden="true">01</span>
+          <div><h2 id="titulo-variaveis">Variáveis e tipos de dados</h2><p class="page-reference">Referência: páginas 65 a 69</p></div>
+        </div>
+        <p class="lesson-intro">Uma variável é um nome que usamos para guardar um valor.</p>
+        <div class="lesson-grid">
+          <article class="explanation">
+            <p class="section-label">ENTENDA</p>
+            <h3>O que estamos guardando?</h3>
+            <p><code>let</code> permite reatribuir um valor. <code>const</code> impede reatribuir a variável. Você também pode encontrar <code>var</code> em códigos antigos; aqui usaremos <code>let</code> e <code>const</code>.</p>
+            <ul class="type-list">
+              <li><code>"Ana"</code> → string: texto.</li>
+              <li><code>18</code> e <code>7.5</code> → number: números.</li>
+              <li><code>true</code> / <code>false</code> → boolean: verdadeiro ou falso.</li>
+              <li><code>undefined</code> → variável sem valor atribuído.</li>
+              <li><code>null</code> → ausência de valor definida de propósito.</li>
+              <li><code>["JS", "HTML"]</code> → array: uma lista.</li>
+              <li><code>{ nome: "Ana" }</code> → object: dados agrupados.</li>
+            </ul>
+            <p class="hint">Arrays são objetos. Uma <code>const</code> pode guardar um array ou objeto cujo conteúdo muda; ela impede a troca da referência.</p>
+          </article>
+          <article class="practice">
+            <p class="section-label">EXPERIMENTE</p>
+            <h3>Conheça seus dados</h3>
+            <div class="field"><label for="nome-variavel">Seu nome</label><input id="nome-variavel" type="text" placeholder="Ex.: Ana" maxlength="60" autocomplete="given-name"></div>
+            <div class="field"><label for="idade-variavel">Sua idade (anos completos)</label><input id="idade-variavel" type="number" min="0" max="130" step="1" placeholder="Ex.: 18"></div>
+            <button id="botao-variaveis" type="button">Ver valores e tipos</button>
+            <pre id="resultado-variaveis" class="result" aria-live="polite">Os valores e seus tipos vão aparecer aqui.</pre>
+            <p class="hint">O valor de um input chega como texto. Usamos <code>Number()</code> para convertê-lo em número.</p>
+          </article>
+        </div>
+        <details class="code-example"><summary>Veja a ideia no código</summary><pre><code>const nome = "Ana";       // string
+let idade = 18;          // number
+idade = idade + 1;       // let pode receber outro valor
+const maiorDeIdade = idade &gt;= 18; // boolean
+let apelido;             // undefined
+const resposta = null;   // ausência intencional
+const materias = ["JS", "HTML"]; // array
+const aluno = { nome: "Ana", idade: 18 }; // objeto
+
+console.log(typeof nome); // "string"
+console.log(typeof idade); // "number"
+// Curiosidade histórica: typeof null retorna "object".</code></pre></details>
+        <p class="hint"><strong>Seu desafio:</strong> crie uma variável chamada <code>cidade</code> no script e mostre seu tipo no console do navegador (F12 → Console).</p>
+      </section>
+
+      <!-- 02: if, else if e else escolhem qual caminho executar. -->
+      <section class="lesson" id="condicionais" aria-labelledby="titulo-condicionais">
+        <div class="lesson-heading"><span class="lesson-number" aria-hidden="true">02</span><div><h2 id="titulo-condicionais">Lógica condicional</h2><p class="page-reference">Referência: páginas 70 a 72</p></div></div>
+        <p class="lesson-intro">O programa pode tomar decisões de acordo com uma condição.</p>
+        <div class="lesson-grid">
+          <article class="explanation">
+            <p class="section-label">ENTENDA</p><h3>Se isso, faça aquilo</h3>
+            <p><code>if</code> significa “se”. <code>else if</code> testa outra condição. <code>else</code> executa quando nenhuma das anteriores é verdadeira.</p>
+            <ul class="operator-list">
+              <li><code>&gt;=</code> maior ou igual · <code>&lt;</code> menor.</li>
+              <li><code>===</code> compara valor e tipo · <code>!==</code> verifica se são diferentes.</li>
+              <li><code>&amp;&amp;</code> significa “e” · <code>||</code> significa “ou”.</li>
+              <li><code>!</code> inverte um boolean.</li>
+            </ul>
+            <p class="hint">Atenção: <code>=</code> atribui um valor; <code>===</code> compara. Neste exemplo, as regras de nota são apenas para praticar.</p>
+          </article>
+          <article class="practice">
+            <p class="section-label">EXPERIMENTE</p><h3>Como foi a nota?</h3>
+            <p>7 a 10: aprovação. De 5 até menos de 7: recuperação. Abaixo de 5: reprovação.</p>
+            <div class="field"><label for="nota">Nota de 0 a 10</label><input id="nota" type="number" min="0" max="10" step="0.1" placeholder="Ex.: 7.5"></div>
+            <button id="botao-nota" type="button">Verificar nota</button>
+            <p id="resultado-nota" class="result" role="status">Digite uma nota para testar as condições.</p>
+          </article>
+        </div>
+        <details class="code-example"><summary>Veja a ideia no código</summary><pre><code>// A nota já deve ter sido validada entre 0 e 10.
+if (nota &gt;= 7) {
+  resultado.textContent = "Aprovação!";
+} else if (nota &gt;= 5) {
+  resultado.textContent = "Recuperação.";
+} else {
+  resultado.textContent = "Reprovação.";
+}</code></pre></details>
+        <p class="hint"><strong>Seu desafio:</strong> teste as notas 4.9, 5, 6.9 e 7. Descubra exatamente quando o resultado muda.</p>
+      </section>
+
+      <!-- 03: funções organizam instruções que podemos reutilizar. -->
+      <section class="lesson" id="funcoes" aria-labelledby="titulo-funcoes">
+        <div class="lesson-heading"><span class="lesson-number" aria-hidden="true">03</span><div><h2 id="titulo-funcoes">Funções</h2><p class="page-reference">Referência: páginas 73 a 85</p></div></div>
+        <p class="lesson-intro">Uma função reúne instruções e só executa quando é chamada.</p>
+        <div class="lesson-grid">
+          <article class="explanation">
+            <p class="section-label">ENTENDA</p><h3>Uma tarefa, um nome</h3>
+            <p>Usamos <code>function</code> para declarar uma função. Os <strong>parâmetros</strong> são os nomes que recebem dados. Os <strong>argumentos</strong> são os valores passados na chamada.</p>
+            <p>Em <code>somar(2, 3)</code>, os argumentos são 2 e 3. O <code>return</code> devolve o resultado e encerra a função.</p>
+            <p class="hint">A função <code>somar</code> calcula. A função <code>mostrarSoma</code> lê os campos e mostra o resultado na página.</p>
+          </article>
+          <article class="practice">
+            <p class="section-label">EXPERIMENTE</p><h3>Uma função que soma</h3>
+            <div class="field-row">
+              <div class="field"><label for="numero-a">Primeiro número</label><input id="numero-a" type="number" step="any" placeholder="Ex.: 2"></div>
+              <div class="field"><label for="numero-b">Segundo número</label><input id="numero-b" type="number" step="any" placeholder="Ex.: 3"></div>
+            </div>
+            <button id="botao-soma" type="button">Chamar somar(a, b)</button>
+            <p id="resultado-soma" class="result" role="status">O retorno da função vai aparecer aqui.</p>
+            <p class="hint">Preencha os dois campos. O número zero também é um valor válido.</p>
+          </article>
+        </div>
+        <details class="code-example"><summary>Veja a ideia no código</summary><pre><code>function somar(a, b) {
+  return a + b;
+}
+
+const total = somar(2, 3);
+console.log(total); // 5
+
+// No evento, passamos o nome da função, sem ().
+// Assim ela só executa quando o botão recebe o clique.
+botaoSoma.addEventListener("click", mostrarSoma);</code></pre></details>
+        <p class="hint"><strong>Seu desafio:</strong> crie uma função <code>multiplicar(a, b)</code> e troque a chamada no exemplo.</p>
+      </section>
+
+      <!-- 04: IDs conectam os elementos HTML às funções do JavaScript. -->
+      <section class="lesson" id="dom" aria-labelledby="titulo-dom">
+        <div class="lesson-heading"><span class="lesson-number" aria-hidden="true">04</span><div><h2 id="titulo-dom">Manipulação de DOM</h2><p class="page-reference">Referência: páginas 73 a 85</p></div></div>
+        <p class="lesson-intro">O DOM representa os elementos do HTML como objetos que o JavaScript pode acessar.</p>
+        <div class="lesson-grid">
+          <article class="explanation">
+            <p class="section-label">ENTENDA</p><h3>O HTML pode mudar</h3>
+            <ul class="type-list">
+              <li><code>getElementById()</code> encontra um elemento pelo ID.</li>
+              <li><code>textContent</code> lê ou altera o texto.</li>
+              <li><code>classList.toggle()</code> adiciona ou retira uma classe CSS.</li>
+              <li><code>createElement()</code> cria um elemento.</li>
+              <li><code>appendChild()</code> coloca o elemento na página.</li>
+              <li><code>remove()</code> retira o elemento da página.</li>
+            </ul>
+            <p class="hint"><code>addEventListener()</code> liga um evento, como um clique, a uma função. Usamos <code>textContent</code> para tratar o que você digita como texto.</p>
+          </article>
+          <article class="practice">
+            <p class="section-label">EXPERIMENTE</p><h3>Mude a página</h3>
+            <p id="texto-dom" class="dom-preview">Eu sou um texto do HTML. Você pode me mudar!</p>
+            <div class="field"><label for="novo-texto">Novo texto</label><input id="novo-texto" type="text" maxlength="140" placeholder="Escreva uma mensagem"></div>
+            <div class="button-row"><button id="botao-texto" type="button">Alterar texto</button><button id="botao-destaque" type="button" class="secondary" aria-pressed="false">Alternar destaque</button></div>
+            <div class="field"><label for="novo-topico">Um tópico para estudar</label><input id="novo-topico" type="text" maxlength="80" placeholder="Ex.: Praticar funções"></div>
+            <div class="button-row"><button id="botao-adicionar" type="button">Adicionar tópico</button><button id="botao-remover" type="button" class="secondary">Remover último</button></div>
+            <ul id="lista-topicos" class="task-list" aria-label="Tópicos para estudar"><li>Revisar variáveis</li></ul>
+            <p id="resultado-dom" class="result" role="status">Experimente alterar o texto ou a lista.</p>
+          </article>
+        </div>
+        <details class="code-example"><summary>Veja a ideia no código</summary><pre><code>const texto = document.getElementById("texto-dom");
+texto.textContent = "Aprendendo JavaScript!";
+texto.classList.toggle("highlight");
+
+const item = document.createElement("li");
+item.textContent = "Praticar funções";
+document.getElementById("lista-topicos").appendChild(item);</code></pre></details>
+        <p class="hint"><strong>Seu desafio:</strong> altere a cor da classe <code>.highlight</code> no CSS e teste o botão de destaque.</p>
+      </section>
+
+      <!-- 05: a máscara formata o texto enquanto o usuário digita. -->
+      <section class="lesson" id="mascara" aria-labelledby="titulo-mascara">
+        <div class="lesson-heading"><span class="lesson-number" aria-hidden="true">05</span><div><h2 id="titulo-mascara">Máscara de entrada</h2><p class="page-reference">Referência: páginas 73 a 85</p></div></div>
+        <p class="lesson-intro">Uma máscara organiza os caracteres de um campo para facilitar a leitura.</p>
+        <div class="lesson-grid">
+          <article class="explanation">
+            <p class="section-label">ENTENDA</p><h3>De números a um formato</h3>
+            <p>Vamos formatar um <strong>celular brasileiro com DDD e 11 dígitos</strong>, sem o código do país. O evento <code>input</code> roda quando o conteúdo do campo muda, inclusive ao colar.</p>
+            <p><code>replace(/\D/g, "")</code> remove tudo que não é dígito. Aqui, <code>\D</code> significa “não dígito” e <code>g</code> aplica a troca em todas as ocorrências.</p>
+            <p><code>slice(inicio, fim)</code> pega uma parte do texto, sem incluir a posição final. As posições começam em zero.</p>
+            <p class="hint">Máscara é formatação: ela não verifica se o número de celular existe. Este exemplo formata ao final do campo; edições no meio podem mover o cursor.</p>
+          </article>
+          <article class="practice">
+            <p class="section-label">EXPERIMENTE</p><h3>Digite ou cole um celular</h3>
+            <div class="field"><label for="celular">Celular com DDD</label><input id="celular" type="tel" inputmode="numeric" autocomplete="off" placeholder="(11) 91234-5678" aria-describedby="ajuda-celular"></div>
+            <p class="hint" id="ajuda-celular">Use 11 dígitos, sem +55. Letras serão removidas e dígitos excedentes serão ignorados.</p>
+            <p id="resultado-mascara" class="result" role="status">0 de 11 dígitos preenchidos.</p>
+          </article>
+        </div>
+        <details class="code-example"><summary>Veja a ideia no código</summary><pre><code>let numeros = campoCelular.value.replace(/\D/g, "");
+numeros = numeros.slice(0, 11); // no máximo 11 dígitos
+
+// Exemplo com todos os dígitos preenchidos:
+const formatado = "(" + numeros.slice(0, 2) + ") "
+  + numeros.slice(2, 7) + "-" + numeros.slice(7, 11);
+
+// No script.js, if e else tratam também os números incompletos.</code></pre></details>
+        <p class="hint"><strong>Seu desafio:</strong> digite aos poucos, apague tudo e cole <code>11912345678</code>. Observe a máscara se formando.</p>
+      </section>
+
+      <!-- 06: cada exemplo usa sua própria chave para salvar e remover dados. -->
+      <section class="lesson" id="armazenamento" aria-labelledby="titulo-armazenamento">
+        <div class="lesson-heading"><span class="lesson-number" aria-hidden="true">06</span><div><h2 id="titulo-armazenamento">localStorage e sessionStorage</h2><p class="page-reference">Armazenamento no navegador</p></div></div>
+        <p class="lesson-intro">Guarde pequenos valores no navegador usando uma chave e um valor.</p>
+        <table class="comparison"><caption>Qual é a diferença?</caption><thead><tr><th scope="col">Recurso</th><th scope="col">Duração</th></tr></thead><tbody><tr><th scope="row"><code>localStorage</code></th><td>Continua após recarregar e fechar o navegador, até ser removido ou ter os dados do site apagados.</td></tr><tr><th scope="row"><code>sessionStorage</code></th><td>Continua ao recarregar a mesma aba. Em geral, termina ao fechar a aba; a restauração de sessão do navegador pode recuperar os dados.</td></tr></tbody></table>
+        <p><code>setItem()</code> salva, <code>getItem()</code> lê e <code>removeItem()</code> remove uma chave. Os valores são guardados como texto. Quando a chave não existe, a leitura retorna <code>null</code>.</p>
+        <div class="storage-grid">
+          <article class="practice storage-card">
+            <p class="section-label">FICA PARA DEPOIS</p><h3>localStorage</h3>
+            <div class="field"><label for="nome-local">Como você quer ser chamado?</label><input id="nome-local" type="text" maxlength="60" placeholder="Ex.: Ana" autocomplete="nickname"></div>
+            <div class="button-row"><button id="salvar-local" type="button">Salvar nome</button><button id="apagar-local" type="button" class="secondary">Apagar nome</button></div>
+            <p id="resultado-local" class="result storage-status" role="status">Nenhum nome salvo.</p>
+          </article>
+          <article class="practice storage-card">
+            <p class="section-label">NESTA ABA</p><h3>sessionStorage</h3>
+            <div class="field"><label for="meta-sessao">Qual é a meta deste estudo?</label><input id="meta-sessao" type="text" maxlength="120" placeholder="Ex.: Entender funções" autocomplete="off"></div>
+            <div class="button-row"><button id="salvar-sessao" type="button">Salvar meta</button><button id="apagar-sessao" type="button" class="secondary">Apagar meta</button></div>
+            <p id="resultado-sessao" class="result storage-status" role="status">Nenhuma meta salva nesta aba.</p>
+          </article>
+        </div>
+        <p class="hint">Use dados de teste. O armazenamento pertence à origem do site (protocolo, domínio e porta). O modo privado, permissões ou a abertura direta por arquivo podem limitar seu funcionamento.</p>
+        <details class="code-example"><summary>Veja a ideia no código</summary><pre><code>// A chave identifica o valor salvo.
+localStorage.setItem("revisaofront_nome", "Ana");
+const nomeSalvo = localStorage.getItem("revisaofront_nome");
+localStorage.removeItem("revisaofront_nome");
+
+sessionStorage.setItem("revisaofront_meta", "Estudar JS");
+const metaSalva = sessionStorage.getItem("revisaofront_meta");
+sessionStorage.removeItem("revisaofront_meta");
+
+// No script.js usamos try/catch para mostrar um aviso
+// caso o navegador bloqueie o armazenamento.</code></pre></details>
+        <p class="hint"><strong>Seu desafio:</strong> salve os dois campos e recarregue a página. Depois, abra o mesmo endereço em uma nova aba independente e compare os resultados.</p>
+      </section>
+
+      <footer class="footer"><strong>Pratique, altere, descubra.</strong><p>O próximo passo é seu: abra o código e experimente mudar um exemplo de cada vez.</p><a href="#inicio">Voltar ao início ↑</a></footer>
+    </main>
+  </div>
+</body>
+</html>
